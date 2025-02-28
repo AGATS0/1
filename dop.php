@@ -1,74 +1,81 @@
-<?php 
-
-$expression=readline('Введите строку для вычисленя:');
-
-function calculate($expression) {
-    // Удаляем все пробелы из строки
-    $expression = str_replace(' ', '', $expression);
-
-    // Проверяем, что строка содержит только допустимые символы
-    if (!preg_match('/^[0-9+\-*\/\.]+$/', $expression)) {
-        return "Error";
-    }
-
-    // Разделяем выражение на числа и операторы
-    preg_match_all('/(\-?\d+)|[\+\-\*\/]/', $expression, $matches);
-    $tokens = $matches[0];
-
-    // Проверяем количество слагаемых
-    if (count($tokens) > 5) {
-        return "Error";
-    }
-
-    // Инициализируем переменные для хранения результата и текущего оператора
-    $result = 0;
-    $currentOperator = '+';
-
-    // Проходим по всем токенам и выполняем операции
-    foreach ($tokens as $token) {
-        if (is_numeric($token)) {
-            // Если токен - число, выполняем операцию
-            switch ($currentOperator) {
-                case '+':
-                    $result += $token;
-                    break;
-                case '-':
-                    $result -= $token;
-                    break;
-                case '*':
-                    $result *= $token;
-                    break;
-                case '/':
-                    if ($token == 0) {
-                        return "Error"; // Деление на ноль
-                    }
-                    $result /= $token;
-                    break;
-            }
-        } else {
-            // Если токен - оператор, сохраняем его для следующей операции
-            $currentOperator = $token;
-        }
-    }
-
-    return $result;
-}
-
-
-/*
+<?php
 $vvod=readline('Введите строку для вычисленя:');
 $vvod = str_replace(' ','',$vvod);
 $vvod=str_split($vvod);
+if (count($vvod)>10){
+    echo "больше 5 значений";
+   } else {
+   for($j = 0; $j < count($vvod); $j++){
+       for ($i = 0; $i < count($vvod); $i++) {
 
-if ($vvod[0]=='-'){
-    $vvod[1]=$vvod[1]-$vvod[1]-$vvod[1];
-    unset($vvod[0]);
-}
+        if(($vvod[$i]=='/' && $vvod[$i+1]=='/') || ($vvod[$i]=='*' && $vvod[$i+1]=='*') || ($vvod[$i]=='+' && $vvod[$i+1]=='+') || ($vvod[$i]=='-' && $vvod[$i+1]=='-') ){
+            echo "error";
+            break 2;
+        }
+           if ($vvod[$i]=='-'){
+               $vvod[$i+1]= $vvod[$i+1]-$vvod[$i+1]*2;
+               unset($vvod[$i]);
+               if(isset($vvod[$i-1])){
+                $vvod[$i-1]= $vvod[$i-1]-$vvod[$i];
+               }
+               $vvod = array_values($vvod);
+           }
+          
+         
 
+           if ($vvod[$i]=='*'){
+            if ($vvod[$i+1]=='-'){
+                $vvod[$i+1]= $vvod[$i+1]-$vvod[$i+1]*2;    
+            }
+               $vvod[$i]=$vvod[$i-1]*$vvod[$i+1];
+               unset($vvod[$i-1]);
+               unset($vvod[$i+1]);
+               $vvod = array_values($vvod);
+           } 
+           
 
+           if ($vvod[$i]=='/'){
+            if ($vvod[$i+1]=='-'){
+                $vvod[$i+1]= $vvod[$i+1]-$vvod[$i+1]*2;    
+            }
+                   $vvod[$i]=$vvod[$i-1]/$vvod[$i+1];
+                   unset($vvod[$i-1]);
+                   unset($vvod[$i+1]); 
+                   $vvod = array_values($vvod);  
+           }
+           ;
 
-print_r($vvod);
-*/
+           if ($vvod[$i]=='+'){ 
+            if ($vvod[$i+1]=='-'){
+                $vvod[$i+1]= $vvod[$i+1]-$vvod[$i+1]*2;    
+            }
+            $vvod[$i]=$vvod[$i-1]+$vvod[$i+1];
+            unset($vvod[$i-1]);
+            unset($vvod[$i+1]);
+            $vvod = array_values($vvod); 
+           }
+           
+           
+
+         
+           }
+          
+       }
+    } 
+    while(count($vvod)>1){
+    for($i = 0; $i < count($vvod); $i++){
+        if ($vvod[$i]<0 && $vvod[$i+1]<0){
+            $vvod[$i]=$vvod[$i]+$vvod[$i+1];
+            unset($vvod[$i+1]);
+            $vvod = array_values($vvod); 
+           } 
+       
+     
+    } 
+   
+} 
+  
+echo  "Результат:$vvod[0]";
 
  /* Проверяем корректность символов в выражении
  if (!preg_match('/^[0-9+\-*\/\.]+$/', $expression)) {
