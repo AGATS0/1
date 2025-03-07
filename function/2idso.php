@@ -31,7 +31,7 @@ $uslovieIdeala = function (int $number) : void
     } 
 };
 
-$uslovieSover = function ($number):void
+$uslovieSover = function (int $number):void
  {
     $sumDelit = 0;
     for ($i = 1; $i <= $number; $i++) {
