@@ -2,7 +2,8 @@
 $text = "Тестовый текст. Тестовый текст содержит какое-то частое слово, самое частое слово - это слово 'текст' текст.";
 echo mostRecent($text);
 
-function mostRecent($text) {  
+function mostRecent(string $text):string 
+{  
     if (strlen($text) > 1000) {
         return "Текст превышает 1000 символов.";
     }

@@ -7,7 +7,8 @@ $res = alphabeticalOrder($vvod);
 echo "результат: $res";
 
 
-function alphabeticalOrder(&$vvod){
+function alphabeticalOrder(string &$vvod):string
+{
     $vvod = str_split($vvod);
     sort($vvod);
     return implode('', $vvod);

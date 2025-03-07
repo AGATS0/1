@@ -15,7 +15,7 @@ function proverka(array $numbers, callable $condition): void
 }
 
 
-$uslovieIdeala = function ($number) 
+$uslovieIdeala = function (int $number) : void
 {
     $sumDelit = 1;
     for ($i = 2; $i < $number; $i++) {
@@ -31,7 +31,8 @@ $uslovieIdeala = function ($number)
     } 
 };
 
-$uslovieSover = function ($number) {
+$uslovieSover = function ($number):void
+ {
     $sumDelit = 0;
     for ($i = 1; $i <= $number; $i++) {
         if ($number % $i === 0) {
