@@ -21,7 +21,7 @@ function mostRecent(string $text):string
             $kolichWords[$slovo] = 1;
         }
     }
-    print_r( $kolichWords);
+   
 
 
     $chastoeSlovo = '';
