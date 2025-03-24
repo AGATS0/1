@@ -1,5 +1,5 @@
-<?php 
-class Animal 
+<?php
+class Animal
 {
     public string $name;
     public int $age;

@@ -1,5 +1,5 @@
 <?php
-require_once 'animal.php';
+require_once 'Animal.php';
 
 class Zoo
 {
@@ -9,7 +9,7 @@ class Zoo
     public function addAnimal(array $a): void
     {
         foreach ($a as $animal) {
-           $this->animals[] = $animal;
+            $this->animals[] = $animal;
         }
     }
 
@@ -30,6 +30,5 @@ class Zoo
             echo $animal->makeSound();
             echo PHP_EOL;
         }
-        
     }
 }

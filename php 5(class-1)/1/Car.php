@@ -15,7 +15,7 @@ class Car
 
     }
 
-    public function getInfo()
+    public function getInfo():string 
     {
         return "Машина:$this->mark $this->model, год выпуска:$this->year,  пробег:$this->probeg".PHP_EOL;
 
