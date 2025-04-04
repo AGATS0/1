@@ -1,0 +1,16 @@
+{
+    "name": "vantyz/php6class-2",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Vantyz\\Php6class2\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vladislav",
+            "email": "vantyz757@gmail.com"
+        }
+    ],
+    "require": {}
+}
