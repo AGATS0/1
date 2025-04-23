@@ -15,12 +15,12 @@ class BankAccountTest extends TestCase
         $this->bankaccount=new BankAccount(1000);
     }
 
-    public function testDeposit()
+    public function testDeposit():void
     {
         $this->assertSame($this->bankaccount->deposit(1000.0),2000.0);
     }
 
-    public function testwithdraw()
+    public function testwithdraw():void
     {
         $this->assertSame($this->bankaccount->withdraw(1000.0),0.0);
     }

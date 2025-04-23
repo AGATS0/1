@@ -17,14 +17,14 @@ class BankAccount
         echo $this->balance.PHP_EOL;
     } 
 
-    public function deposit($amount):float
+    public function deposit(float $amount):float
     {
         if ($amount<=0) throw new InvalidAmountException;
         $this->balance = $this->balance + $amount;
         return $this->balance;
     }
 
-    public function withdraw($amount):float
+    public function withdraw(float $amount):float
     {
         if ($amount<=0 || $amount>$this->balance) throw new InsufficientFundsException;
         $this->balance = $this->balance - $amount;
