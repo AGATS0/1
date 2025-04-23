@@ -8,6 +8,7 @@ class BankAccount
 
     public function __construct(float $initialBalance)
     {
+        if ($initialBalance<0) throw new InvalidAmountException;
         $this->balance = $initialBalance;         
     }
     
@@ -18,12 +19,14 @@ class BankAccount
 
     public function deposit($amount):float
     {
+        if ($amount<=0) throw new InvalidAmountException;
         $this->balance = $this->balance + $amount;
         return $this->balance;
     }
 
     public function withdraw($amount):float
     {
+        if ($amount<=0 || $amount>$this->balance) throw new InsufficientFundsException;
         $this->balance = $this->balance - $amount;
         return $this->balance;
     }
