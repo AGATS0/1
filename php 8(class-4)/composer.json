@@ -1,0 +1,16 @@
+{
+    "name": "agats/trycatch",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Agats\\Trycatch\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vladislav",
+            "email": "vantyz757@gmail.com"
+        }
+    ],
+    "require": {}
+}
