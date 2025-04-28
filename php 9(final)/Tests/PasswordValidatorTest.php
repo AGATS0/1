@@ -6,16 +6,17 @@ use PHPUnit\Framework\TestCase;
 
 final class PasswordValidatorTest extends TestCase
 {
-    private PasswordValidator $PasswordValidator;
+    private PasswordValidator $passwordValidator;
 
     protected function setUp():void
     {
-        $this->PasswordValidator=new PasswordValidator();
+        $this->passwordValidator=new PasswordValidator();
     }
 
     public static function additionProvider(): array
     {
         return [
+            ['Cool 234',false],
             ['Cool1234',true],
             ['Cool123',false],
             ['cool1234',false],
@@ -26,7 +27,7 @@ final class PasswordValidatorTest extends TestCase
     #[DataProvider('additionProvider')]
     public function testValidate(string $a,bool $b): void
     {
-        $this->assertSame($this->PasswordValidator->validate($a),$b);
+        $this->assertSame($this->passwordValidator->validate($a),$b);
     }
 
 
