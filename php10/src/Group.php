@@ -21,7 +21,7 @@ class Group
     public function getGroupAverage(): float
     {
         if (empty($this->students)) {
-            echo "no students" . PHP_EOL;
+            return 0;
         }
 
         $studentsTotalSum = 0;
