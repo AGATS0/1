@@ -34,8 +34,8 @@ printStudentInfo($student4);
 
 printGroupInfo($group);
 
-echo "Лучший студент группы:".PHP_EOL;
-$bestStudent= $group->getBestStudent();
+echo "Лучший студент группы:" . PHP_EOL;
+$bestStudent = $group->getBestStudent();
 printStudentInfo($bestStudent);
 
 echo "cool";

@@ -2,41 +2,39 @@
 
 namespace Vantyz\Php10;
 
-class Group 
+class Group
 {
     public string $groupName;
     public array $students;
 
-    public function __construct(string $groupName,array $students=[])
+    public function __construct(string $groupName, array $students = [])
     {
-       $this->groupName=$groupName;
-       $this->students=$students;
+        $this->groupName = $groupName;
+        $this->students = $students;
     }
 
     public function addStudent(Student $student): void
     {
-        $this->students[]=$student;
-
+        $this->students[] = $student;
     }
 
-    public function getGroupAverage(): float 
+    public function getGroupAverage(): float
     {
         if (empty($this->students)) {
-            echo "no students".PHP_EOL;
+            echo "no students" . PHP_EOL;
         }
-        
+
         $studentsTotalSum = 0;
         $studentsTotalCount = 0;
 
         foreach ($this->students as $student) {
-           
+
             $studentAverage = $student->getAverage();
             $studentsTotalSum += $studentAverage;
             $studentsTotalCount++;
         }
 
         return $studentsTotalSum / $studentsTotalCount;
-
     }
 
     public function getBestStudent(): Student
@@ -46,16 +44,13 @@ class Group
         $bestStudent = NULL;
 
         foreach ($this->students as $student) {
-           
+
             $totalAverage = $student->getAverage();
-            if ($totalAverage>$maxAverage)
-            {
-                $bestStudent=$student;
+            if ($totalAverage > $maxAverage) {
+                $bestStudent = $student;
             }
-            
         }
 
         return $bestStudent;
-
     }
 }
