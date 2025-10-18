@@ -25,7 +25,7 @@ final class ClientController extends AbstractController
     #[Route('/client', name: 'app_client')]
     public function clientsList(EntityManagerInterface $entityManager): Response
     {
-         $clientsWithOrders = $entityManager->createQueryBuilder()
+        $clientsWithOrders = $entityManager->createQueryBuilder()
             ->select('u.id, u.name, u.email, COUNT(o.id) as ordersCount')
             ->from(Client::class, 'u')
             ->leftJoin('u.orders', 'o')
@@ -37,41 +37,31 @@ final class ClientController extends AbstractController
         return $this->render('client/list.html.twig', [
             'clients' => $clientsWithOrders,
         ]);
-
     }
 
-     #[Route('/topclients', name: 'app_client_top')]
+    #[Route('/topclients', name: 'app_client_top')]
     public function clientsTopList(EntityManagerInterface $entityManager): Response
     {
         $topClients = $entityManager->createQueryBuilder()
-    // Шаг 1: Выбираем что нам нужно
-    ->select('c.name', 'c.email',
-             'SUM(oi.quantity * oi.unitPrice) as totalSpent')
-    
-    // Шаг 2: Указываем откуда берем данные (главная таблица)
-    ->from(Client::class, 'c')
-    
-    // Шаг 3: Присоединяем связанные таблицы
-    ->leftJoin('c.orders', 'o')          // заказы клиента
-    ->leftJoin('o.orderItems', 'oi')     // товары в заказах
-    
-    // Шаг 4: Группируем по клиентам (чтобы SUM работал)
-    ->groupBy('c.id')
-    
-    // Шаг 5: Сортируем по убыванию суммы
-    ->orderBy('totalSpent', 'DESC')
-    
-    // Шаг 6: Берем только топ-3
-    ->setMaxResults(3)
-    
-    // Выполняем запрос
-    ->getQuery()
-    ->getResult();
-    
+            
+            ->select(
+                'c.name',
+                'c.email',
+                'SUM(oi.quantity * oi.unitPrice) as totalSpent'
+            )
+
+            ->from(Client::class, 'c')
+            ->leftJoin('c.orders', 'o')         
+            ->leftJoin('o.orderItems', 'oi')  
+            ->groupBy('c.id')
+            ->orderBy('totalSpent', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult();
+
 
         return $this->render('client/toplist.html.twig', [
             'clients' => $topClients,
         ]);
-
     }
 }
