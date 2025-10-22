@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\DishRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[ORM\Entity(repositoryClass: DishRepository::class)]
+class Dish
+{
+     public function __construct(?string $name, ?int $price)
+    {
+        $this->name = $name;
+        $this->price = $price;
+    }
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    #[Assert\Positive]
+    #[ORM\Column]
+    private ?int $price = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(int $price): static
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+}
