@@ -7,7 +7,9 @@
     <div>
         <h1>Список заказов</h1>  
 
-        <a href="{{ path('order_create') }}">Создать новый заказ</a>
+        <a href="{{ path('app_order_new') }}">Создать новый заказ       </a>
+        <a href="{{ path('app_dish_new') }}">Создать новое блюдо         </a>
+        <a href="{{ path('app_client_new') }}">Создать нового клиента</a>
         
         {% if orders|length > 0 %}
             <table border="1">
@@ -40,12 +42,31 @@
                                 {{ total }} руб.
                             </td>
                             <td>
-                                 <a href="{{ path('order_show', {'id': order.id}) }}">Просмотр</a> 
+                                 <a href="{{ path('app_order_show', {'id': order.id}) }}">Просмотр</a>
+                                 <a href="{{ path('app_order_edit', {'id': order.id}) }}" >Изменить</a>
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Список клиентов</th>
+                        <th>Список блюд</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td><a href="{{ path('app_client_index') }}">Просмотр</a></td>
+                            <td><a href="{{ path('app_dish_index') }}">Просмотр</a></td>
+                            
+                        </tr>
+                </tbody>
+            </table>
+
         {% else %}
             <div>Заказов пока нет</div>
         {% endif %}

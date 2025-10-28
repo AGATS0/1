@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Новое блюдо</title>
+
+{% block body %}
+    <h1>Создание нового блюда</h1>
+
+    {{ include('dish/_form.html.twig') }}
+
+
+    <a href="{{ path('app_order_index') }}">Назад к списку заказов      </a>
+    <a href="{{ path('app_dish_index') }}">Список блюд</a>
+{% endblock %}

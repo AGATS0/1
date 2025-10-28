@@ -2,97 +2,97 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
+use App\Form\OrderType;
+use App\Repository\OrderRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-use App\Repository\OrderRepository;
 use App\Repository\ClientRepository;
 use App\Repository\DishRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\Order;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\HttpFoundation\Request;
 
-
+#[Route('/order')]
 final class OrderController extends AbstractController
 {
 
-    public function __construct(
+     public function __construct(
         private OrderRepository $orderRepository,
         private EntityManagerInterface $entityManager,
         private ClientRepository $clientRepository,
         private DishRepository $dishRepository,
     ) {}
 
-    #[Route('/orders', name: 'order_list')]
-    public function list(EntityManagerInterface $entityManager): Response
-    {
-        $orders = $entityManager->getRepository(Order::class)->findAll();
 
+    #[Route(name: 'app_order_index', methods: ['GET'])]
+    public function index(OrderRepository $orderRepository): Response
+    {
         return $this->render('order/list.html.twig', [
-            'orders' => $orders,
+            'orders' => $orderRepository->findAll(),
         ]);
     }
 
-    #[Route('/orders/new', name: 'order_create', methods: ['GET', 'POST'])]
+    
+    #[Route('/new', name: 'app_order_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,ValidatorInterface $validator): Response
     {
         $order = new Order();
-        
-        $clients = $this->clientRepository->findAll();
-        $dishes =$this->dishRepository->findAll();
-        
+        $form = $this->createForm(OrderType::class, $order);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('POST')) {
-            $clientId = $request->request->get('client');
-            $dishIds = $request->request->all('dishes');
-            
-            $client = $this->clientRepository->find($clientId);
-            
-            foreach ($dishIds as $dishId) {
-                $dish = $this->dishRepository->find($dishId);
-                if ($dish) {
-                    $order->addDish($dish);
-                }
-            }
+        $errors = $validator->validate($order);
 
-            $order->setClient($client);
+        if ($form->isSubmitted() && $form->isValid() && count($errors) === 0) {
+            $entityManager->persist($order);
+            $entityManager->flush();
 
-            $errors = $validator->validate($order);//empty
-
-           
-            
-            if (empty($errors)) { //все в этом условии не осуществляется
-
-                $entityManager->persist($order); 
-                $entityManager->flush();
-                
-                
-                $this->addFlash('status', 'Заказ успешно создан!');
-                
-                return $this->redirectToRoute('order_list');
-
-            } else {
-                foreach ($errors as $error) {
-                    $this->addFlash('error', $error);
-                }
-            }
+            return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
         }
-        
-        return $this->render('order/create.html.twig', [
-            'clients' => $clients,
-            'dishes' => $dishes,
+
+        return $this->render('order/new.html.twig', [
+            'order' => $order,
+            'form' => $form,
         ]);
     }
 
 
-     #[Route('/orders/{id}', name: 'order_show')]
+    #[Route('/{id}', name: 'app_order_show', methods: ['GET'])]
     public function show(Order $order): Response
     {
         return $this->render('order/show.html.twig', [
             'order' => $order,
         ]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_order_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Order $order, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(OrderType::class, $order);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('order/edit.html.twig', [
+            'order' => $order,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_order_delete', methods: ['POST'])]
+    public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($order);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
     }
 }

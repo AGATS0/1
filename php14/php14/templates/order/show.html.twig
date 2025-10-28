@@ -7,42 +7,39 @@
     <div>
         <h1>Заказ {{ order.id }}</h1>
         
-        <a href="{{ path('order_list') }}" >Назад</a>
-        
-        {# Шаг 2: Показываем сообщения об успехе #}
+        <a href="{{ path('app_order_index') }}" >Назад</a>
+
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">{{ message }}</div>
         {% endfor %}
         
-        {# Шаг 3: Информация о клиенте #}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Информация о клиенте</h5>
+
+        <div>
+            <div>
+                <h5>Информация о клиенте</h5>
                 <p><strong>Имя:</strong> {{ order.client.name }}</p>
                 <p><strong>Телефон:</strong> {{ order.client.phoneNumber }}</p>
             </div>
         </div>
         
-        {# Шаг 4: Состав заказа #}
-        <div class="card mt-3">
-            <div class="card-body">
-                <h5 class="card-title">Состав заказа</h5>
-                <table class="table">
+       
+        <div>
+            <div>
+                <h5>Состав заказа</h5>
+                <table>
                     <thead>
                         <tr>
                             <th>Блюдо</th>
                             <th>Цена</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {# Шаг 5: Перебираем все блюда в заказе #}
+                    <tbody> 
                         {% set total = 0 %}
                         {% for dish in order.dish %}
                             <tr>
                                 <td>{{ dish.name }}</td>
                                 <td>{{ dish.price }} руб.</td>
-                            </tr>
-                            {# Шаг 6: Считаем общую стоимость #}
+                            </tr> 
                             {% set total = total + dish.price %}
                         {% endfor %}
                     </tbody>

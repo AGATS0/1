@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>Создание нового заказа</title>
+
+{% block body %}
+    <h1>Создание нового заказа</h1>
+
+    {{ include('order/_form.html.twig') }}
+
+    <a href="{{ path('app_order_index') }}">К списку заказов</a>
+{% endblock %}

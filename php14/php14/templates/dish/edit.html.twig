@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Изменить блюдо</title>
+
+{% block body %}
+    <h1>Изменить блюдо</h1>
+
+    {{ include('dish/_form.html.twig', {'button_label': 'Изменить'}) }}
+
+    <a href="{{ path('app_dish_index') }}">Назад к списку</a>
+
+    {{ include('dish/_delete_form.html.twig') }}
+{% endblock %}

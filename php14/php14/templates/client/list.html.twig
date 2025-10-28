@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список клиентов</title>
+</head>
+<body>
+    <div>
+        <h1>Список клиентов</h1>  
+       
+       
+
+        <a href="{{ path('app_client_new') }}">Создать нового клиента     </a>
+        <a href="{{ path('app_order_index') }}">Назад к списку заказов</a>
+        
+
+
+        {% if clients|length > 0 %}
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ФИО</th>
+                        <th>Телефон</th>
+                        <th>-</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                        <tr>
+                            <td>{{ client.id }}</td>
+                            <td>{{ client.name }}</td>
+                            <td>{{ client.phoneNumber }}</td>
+                            <td>
+                                <a href="{{ path('app_client_show', {'id': client.id}) }}">Подробнее</a>
+                                <a href="{{ path('app_client_edit', {'id': client.id}) }}">Изменить</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div>Клиентов пока нет</div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Изменить заказ</title>
+
+{% block body %}
+    <h1>Изменить заказ</h1>
+
+    {{ include('order/_form.html.twig', {'button_label': 'Изменить'}) }}
+
+    <a href="{{ path('app_order_index') }}">Назад</a>
+
+    {{ include('order/_delete_form.html.twig') }}
+{% endblock %}

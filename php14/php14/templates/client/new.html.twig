@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+
+<title>Создание нового клиента</title>
+
+{% block body %}
+    <h1>Создание нового клиента</h1>
+
+    {{ include('client/_form.html.twig') }}
+
+    <a href="{{ path('app_order_index') }}">Назад к списку заказов</a>
+    <a href="{{ path('app_client_index') }}">Список клиентов</a>
+{% endblock %}
