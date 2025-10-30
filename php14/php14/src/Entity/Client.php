@@ -16,11 +16,7 @@ class Client
     private ?int $id = null;
 
 
-  public function __construct(?string $name, ?string $phoneNumber)
-    {
-        $this->name = $name;
-        $this->phoneNumber = $phoneNumber;
-    }
+  
 //client name phone number,dish name price, order 
 
     #[Assert\NotBlank]
@@ -29,6 +25,12 @@ class Client
 
     #[ORM\Column(length: 15)]
     private ?string $phoneNumber = null;
+
+    public function __construct(?string $name, ?string $phoneNumber)
+    {
+        $this->name = $name;
+        $this->phoneNumber = $phoneNumber;
+    }
 
     public function getId(): ?int
     {

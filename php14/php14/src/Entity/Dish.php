@@ -10,11 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: DishRepository::class)]
 class Dish
 {
-     public function __construct(?string $name, ?int $price)
-    {
-        $this->name = $name;
-        $this->price = $price;
-    }
+    
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -28,6 +24,12 @@ class Dish
     #[Assert\Positive]
     #[ORM\Column]
     private ?int $price = null;
+
+     public function __construct(?string $name, ?int $price)
+    {
+        $this->name = $name;
+        $this->price = $price;
+    }
 
     public function getId(): ?int
     {

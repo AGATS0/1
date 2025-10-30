@@ -19,10 +19,7 @@ class Order
     private ?int $id = null;
 
 
-    public function __construct()
-    {
-        $this->dish = new ArrayCollection();
-    }
+    
 
     /**
      * @var Collection<int, Dish>
@@ -36,6 +33,11 @@ class Order
 
     #[ORM\ManyToOne]
     private ?Client $client = null;
+
+    public function __construct()
+    {
+        $this->dish = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
