@@ -111,7 +111,7 @@ final class OrderController extends AbstractController
 
                 $projectDir = $this->getParameter('kernel.project_dir');
                 try {
-                    $uploadedFile->move($projectDir . "/public/uploads/images", $newFilename);
+                    $uploadedFile->move($projectDir . "/public/uploads/orders", $newFilename);
                     $order->setFilePath("/uploads/orders/" . $newFilename);
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Ошибка при загрузке файла');
