@@ -5,32 +5,31 @@ namespace App\Entity;
 use App\Repository\DishRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 #[ORM\Entity(repositoryClass: DishRepository::class)]
 class Dish
 {
-    
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[Assert\Positive]
     #[ORM\Column]
-    private ?int $price = null;
+    private ?float $price = null;
 
-     public function __construct(?string $name, ?int $price)
+    // Только путь к файлу
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imagePath = null;
+
+    public function __construct(string $name = null, float $price = null)
     {
         $this->name = $name;
         $this->price = $price;
     }
 
+    // Геттеры и сеттеры
     public function getId(): ?int
     {
         return $this->id;
@@ -44,19 +43,28 @@ class Dish
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(int $price): static
+    public function setPrice(float $price): static
     {
         $this->price = $price;
+        return $this;
+    }
 
+    public function getImagePath(): ?string
+    {
+        return $this->imagePath;
+    }
+
+    public function setImagePath(?string $imagePath): static
+    {
+        $this->imagePath = $imagePath;
         return $this;
     }
 }

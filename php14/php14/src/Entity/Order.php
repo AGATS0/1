@@ -34,11 +34,26 @@ class Order
     #[ORM\ManyToOne]
     private ?Client $client = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $filePath = null;
+
+
+
     public function __construct()
     {
         $this->dish = new ArrayCollection();
     }
 
+     public function getfilePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    public function setfilePath(?string $filePath): static
+    {
+        $this->filePath = $filePath;
+        return $this;
+    }
 
     public function getId(): ?int
     {

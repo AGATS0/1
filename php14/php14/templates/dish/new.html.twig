@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-
-<title>Новое блюдо</title>
-
-{% block body %}
+<html>
+<head>
+    <title>Новое блюдо</title>
+</head>
+<body>
     <h1>Создание нового блюда</h1>
 
-    {{ include('dish/_form.html.twig') }}
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.price) }}
+        {{ form_row(form.imageFile) }}
+
+        <button class="btn">{{ button_label|default('Создать') }}</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_dish_index') }}">Назад к списку</a>
+</body>
+</html>
 
 
-    <a href="{{ path('app_order_index') }}">Назад к списку заказов      </a>
-    <a href="{{ path('app_dish_index') }}">Список блюд</a>
-{% endblock %}
+

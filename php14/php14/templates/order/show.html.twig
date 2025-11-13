@@ -50,6 +50,20 @@
                         </tr>
                     </tfoot>
                 </table>
+
+                <div>
+
+                 {% if order.filePath %}
+            <img src="{{ asset(order.filePath) }}"  
+                 style="max-width: 400px; max-height: 400px;">
+            <br>
+            <a href="{{ path('app_order_download', {'id': order.id}) }}">Скачать документ</a>
+        {% else %}
+            <div style="width: 400px; height: 400px; background: #ddd; display: flex; align-items: center; justify-content: center;">
+                <span style="color: #999;">документ не загружен</span>
+            </div>
+        {% endif %}
+                </div>
             </div>
         </div>
     </div>

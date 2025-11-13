@@ -1,13 +1,59 @@
 <!DOCTYPE html>
+<html>
+<head>
+    <title>Редактирование заказа</title>
+</head>
+<body>
+    <h1>Редактирование заказа: {{ order.id }}</h1>
 
-<title>Изменить заказ</title>
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        {{ form_row(form.dish) }}
+        {{ form_row(form.client) }}
+        {{ form_row(form.file) }}
 
-{% block body %}
-    <h1>Изменить заказ</h1>
+        {% if order.filePath %}
+            <div class="current-image mb-3">
+                <p><strong>Информация о заказе:</strong></p>
+                <img src="{{ asset(order.filePath) }}" 
+                     alt="{{ order.id }}" 
+                     style="max-width: 200px; max-height: 200px; border: 1px solid #ccc;">
+            </div>
+        {% else %}
+            <div class="no-image mb-3">
+                <p>файл не загружено</p>
+                <div style="width: 200px; height: 200px; background: #ddd; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: #999;">Затычка</span>
+                </div>
+            </div>
+        {% endif %}
 
-    {{ include('order/_form.html.twig', {'button_label': 'Изменить'}) }}
+        <div style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            <a href="{{ path('app_order_index') }}" class="btn btn-secondary">Назад к списку</a>
+        </div>
+    {{ form_end(form) }}
 
-    <a href="{{ path('app_order_index') }}">Назад</a>
+    <div>
 
-    {{ include('order/_delete_form.html.twig') }}
-{% endblock %}
+     <form method="post" action="{{ path('app_order_delete', {'id': order.id}) }}" 
+              style="margin-top: 10px;"
+              onsubmit="return confirm('Удалить этот заказ?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ order.id) }}">
+            <button class="btn btn-danger">Удалить заказ</button>
+        </form>
+        
+        {% if order.filePath %}
+            <form method="post" action="{{ path('app_order_delete_file', {'id': order.id}) }}" 
+                  onsubmit="return confirm('Вы уверены, что хотите удалить файл?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete-file' ~ order.id) }}">
+                <button type="submit" class="btn btn-warning">Удалить файл</button>
+            </form>
+        {% endif %}
+
+        
+    </div>
+
+    
+
+</body>
+</html>
