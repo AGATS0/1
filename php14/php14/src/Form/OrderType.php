@@ -29,24 +29,12 @@ class OrderType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Клиенты',
             ])
-            ->add('file', FileType::class, [
-                'label' => 'Информация о заказе',
+            ->add('uploadedFiles', FileType::class, [
+                'label' => 'Файлы заказа',
+                'multiple' => true, 
                 'required' => false,
-                'mapped' => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '2M',
-                        'mimeTypes' => [
-                            'image/jpeg',      // JPG
-                            'image/png',       // PNG
-                            'image/jpg',       // JPG
-                            'text/plain',      // TXT
-                            'application/pdf', // PDF
-                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // DOCX
-                        ],
-                        'mimeTypesMessage' => 'Пожалуйста, загрузите файл в другом формате',
-                    ])
-                ]
+                'mapped' => false, 
+                
             ])
         ;
     }

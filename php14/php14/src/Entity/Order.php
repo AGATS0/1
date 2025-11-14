@@ -19,8 +19,6 @@ class Order
     private ?int $id = null;
 
 
-    
-
     /**
      * @var Collection<int, Dish>
      */
@@ -34,24 +32,42 @@ class Order
     #[ORM\ManyToOne]
     private ?Client $client = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $filePath = null;
-
-
+     #[ORM\OneToMany(targetEntity: OrderFile::class, mappedBy: 'order', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $files;
 
     public function __construct()
     {
         $this->dish = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
-     public function getfilePath(): ?string
+    /**
+     * @return Collection<int, OrderFile>
+     */
+
+    public function getFiles(): Collection
     {
-        return $this->filePath;
+        return $this->files;
     }
 
-    public function setfilePath(?string $filePath): static
+    public function addFile(OrderFile $file): static
     {
-        $this->filePath = $filePath;
+        if (!$this->files->contains($file)) {
+            $this->files->add($file);
+            $file->setOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFile(OrderFile $file): static
+    {
+        if ($this->files->removeElement($file)) {
+            if ($file->getOrder() === $this) {
+                $file->setOrder(null);
+            }
+        }
+
         return $this;
     }
 

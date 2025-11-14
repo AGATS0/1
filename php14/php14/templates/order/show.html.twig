@@ -51,19 +51,27 @@
                     </tfoot>
                 </table>
 
-                <div>
 
-                 {% if order.filePath %}
-            <img src="{{ asset(order.filePath) }}"  
-                 style="max-width: 400px; max-height: 400px;">
-            <br>
-            <a href="{{ path('app_order_download', {'id': order.id}) }}">Скачать документ</a>
+    
+        <div>
+
+        <p><strong>Файлы:</strong></p>
+        {% if order.files|length > 0 %}
+            <ul>
+                {% for file in order.files %}
+                    <li>
+                        <a href="{{ path('app_order_download_file', {'id': order.id, 'fileId': file.id}) }}">
+                            Файл {{ loop.index }}
+                        </a>
+                        ({{ file.filePath|split('.')|last|upper }})
+                    </li>
+                {% endfor %}
+            </ul>
         {% else %}
-            <div style="width: 400px; height: 400px; background: #ddd; display: flex; align-items: center; justify-content: center;">
-                <span style="color: #999;">документ не загружен</span>
-            </div>
+            <p>Файлов нет</p>
         {% endif %}
-                </div>
+
+      </div>
             </div>
         </div>
     </div>

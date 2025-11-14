@@ -8,7 +8,7 @@
     {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
         {{ form_row(form.dish) }}
         {{ form_row(form.client) }}
-        {{ form_row(form.file) }}
+        {{ form_row(form.uploadedFiles) }}
 
         <button class="btn">{{ button_label|default('Создать') }}</button>
     {{ form_end(form) }}
