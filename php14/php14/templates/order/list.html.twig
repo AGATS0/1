@@ -10,7 +10,8 @@
         <a href="{{ path('app_order_new') }}">Создать новый заказ       </a>
         <a href="{{ path('app_dish_new') }}">Создать новое блюдо         </a>
         <a href="{{ path('app_client_new') }}">Создать нового клиента</a>
-        
+        <a href="{{ path('app_order_export_excel') }}">Скачать все заказы в excel</a>
+
         {% if orders|length > 0 %}
             <table border="1">
                 <thead>
