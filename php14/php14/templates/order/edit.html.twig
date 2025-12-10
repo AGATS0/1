@@ -4,55 +4,74 @@
     <title>Редактирование заказа</title>
 </head>
 <body>
-    <h1>Редактирование заказа: {{ order.id }}</h1>
+    <div>
+        <h1>Редактирование заказа #{{ order.id }}</h1>
 
-    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
-        {{ form_row(form.dish) }}
-        {{ form_row(form.client) }}
-        {{ form_row(form.uploadedFiles) }}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-error">{{ message }}</div>
+        {% endfor %}
 
-        {% if order.files %}
-            <div style="margin-top: 20px;">
-                <p><strong>Текущие файлы:</strong></p>
-                <ul>
-                    {% for file in order.files %}
-                        <li>
-                            <a href="{{ path('app_order_download_file', {'id': order.id, 'fileId': file.id}) }}">
-                                Файл {{ loop.index }}
-                            </a>
-                        </li>
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        
+            <div>
+                {{ form_label(form.dish) }}
+                <div>
+                    {% for child in form.dish %}
+                        <div>
+                            {{ form_widget(child) }}
+                            {{ form_label(child) }}
+                        </div>
                     {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-
-        <div style="margin-top: 20px;">
-            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-            <a href="{{ path('app_order_index') }}" class="btn btn-secondary">Назад к списку</a>
-        </div>
-    {{ form_end(form) }}
-
-    <div style="margin-top: 20px;">
-        {% if order.files %}
-            {% for file in order.files %}
-                <div style="margin-bottom: 10px;">
-                    Файл {{ loop.index }}
-                    <form method="post" action="{{ path('app_order_delete_file', {'id': order.id, 'fileId': file.id}) }}" 
-                          style="display: inline;"
-                          onsubmit="return confirm('Удалить этот файл?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete-file-' ~ file.id) }}">
-                        <button type="submit" class="btn btn-danger btn-sm">Удалить файл</button>
-                    </form>
                 </div>
-            {% endfor %}
-        {% endif %}
-
-        <form method="post" action="{{ path('app_order_delete', {'id': order.id}) }}" 
-              style="margin-top: 10px;"
-              onsubmit="return confirm('Удалить этот заказ?');">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ order.id) }}">
-            <button type="submit" class="btn btn-danger">Удалить заказ</button>
-        </form>
+                {{ form_errors(form.dish) }}
+            </div>
+            
+            {% if form.client is defined %}
+                <div>
+                    {{ form_label(form.client) }}
+                    {{ form_widget(form.client) }}
+                    {{ form_errors(form.client) }}
+                </div>
+            {% endif %}
+            
+            <div>
+                {{ form_label(form.uploadedFiles) }}
+                {{ form_widget(form.uploadedFiles) }}
+                {{ form_errors(form.uploadedFiles) }}
+                <small>Можно выбрать несколько файлов</small>
+            </div>
+            
+            {% if order.files|length > 0 %}
+                <div>
+                    <label>Текущие файлы:</label>
+                    <div>
+                        {% for file in order.files %}
+                            <div>
+                                <a href="{{ path('app_order_download_file', {'id': order.id, 'fileId': file.id}) }}">
+                                    Файл {{ loop.index }}
+                                </a>
+                                <form method="post" action="{{ path('app_order_delete_file', {'id': order.id, 'fileId': file.id}) }}" 
+                                      style="display: inline; margin-left: 10px;"
+                                      onsubmit="return confirm('Удалить этот файл?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete-file-' ~ file.id) }}">
+                                    <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">Удалить</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            
+            <div>
+                <button type="submit">Сохранить изменения</button>
+                <a href="{{ path('app_profile') }}" >Назад к профилю</a>
+            </div>
+            
+        {{ form_end(form) }}
     </div>
 </body>
 </html>

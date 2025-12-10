@@ -1,0 +1,36 @@
+{# templates/security/login.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Вход</title>
+</head>
+<body>
+    <div>
+        <h1>Вход в систему</h1>
+        
+        {% if error %}
+            <div style="color: red; margin: 10px 0;">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        
+        <form method="post" action="{{ path('app_login') }}">
+            <div>
+                <label for="phoneNumber">Номер телефона:</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" value="{{ last_phone }}" required>
+            </div>
+            
+            <div>
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <div>
+                <button type="submit">Войти</button>
+            </div>
+        </form>
+        
+        <p style="margin-top: 20px;">
+            Нет аккаунта? <a href="{{ path('app_client_new') }}">Зарегистрироваться</a>
+        </p>
+    </div>
+</body>
+</html>

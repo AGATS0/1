@@ -32,13 +32,28 @@ class Order
     #[ORM\ManyToOne]
     private ?Client $client = null;
 
-     #[ORM\OneToMany(targetEntity: OrderFile::class, mappedBy: 'order', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: OrderFile::class, mappedBy: 'order', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $files;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt = null;
 
     public function __construct()
     {
         $this->dish = new ArrayCollection();
         $this->files = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**

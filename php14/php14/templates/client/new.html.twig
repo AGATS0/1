@@ -1,12 +1,45 @@
 <!DOCTYPE html>
+<html>
+<head>
+    <title>Создание нового клиента</title>
+</head>
+<body>
+    <div>
+        <h1>Регистрация нового клиента</h1>
 
-<title>Создание нового клиента</title>
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-error">{{ message }}</div>
+        {% endfor %}
+        
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
 
-{% block body %}
-    <h1>Создание нового клиента</h1>
+        {{ form_start(form) }}
+            <div >
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+                {{ form_errors(form.name) }}
+            </div>
+            
+            <div >
+                {{ form_label(form.phoneNumber) }}
+                {{ form_widget(form.phoneNumber) }}
+                {{ form_errors(form.phoneNumber) }}
+            </div>
+            
+            <div>
+                {{ form_label(form.plainPassword) }}
+                {{ form_widget(form.plainPassword) }}
+                {{ form_errors(form.plainPassword) }}
+            </div>
+            
+            <button type="submit">Зарегистрироваться</button>
+        {{ form_end(form) }}
 
-    {{ include('client/_form.html.twig') }}
-
-    <a href="{{ path('app_order_index') }}">Назад к списку заказов</a>
-    <a href="{{ path('app_client_index') }}">Список клиентов</a>
-{% endblock %}
+        <p>
+            Если уже есть аккаунт <a href="{{ path('app_login') }}">Войти</a>
+        </p>
+    </div>
+</body>
+</html>

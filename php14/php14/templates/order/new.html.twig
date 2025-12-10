@@ -1,17 +1,57 @@
 <!DOCTYPE html>
+<html>
+<head>
+    <title>Создание нового заказа</title>
+</head>
+<body>
+    <div>
+        <h1>Создание нового заказа</h1>
 
-<title>Создание нового заказа</title>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-error">{{ message }}</div>
+        {% endfor %}
 
-{% block body %}
-    <h1>Создание нового заказа</h1>
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        
+            <div>
+                {{ form_label(form.dish) }}
+                <div>
+                    {% for child in form.dish %}
+                        <div>
+                            {{ form_widget(child) }}
+                            {{ form_label(child) }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {{ form_errors(form.dish) }}
+            </div>
+            
+            {% if form.client is defined %}
+                <div>
+                    {{ form_label(form.client) }}
+                    {{ form_widget(form.client) }}
+                    {{ form_errors(form.client) }}
+                </div>
+            {% endif %}
+            
+            <div>
+                {{ form_label(form.uploadedFiles) }}
+                {{ form_widget(form.uploadedFiles) }}
+                {{ form_errors(form.uploadedFiles) }}
+                <small>Можно выбрать несколько файлов</small>
+            </div>
+            
+            <button type="submit">Создать заказ</button>
+            
+        {{ form_end(form) }}
 
-    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
-        {{ form_row(form.dish) }}
-        {{ form_row(form.client) }}
-        {{ form_row(form.uploadedFiles) }}
-
-        <button class="btn">{{ button_label|default('Создать') }}</button>
-    {{ form_end(form) }}
-
-    <a href="{{ path('app_order_index') }}">К списку заказов</a>
-{% endblock %}
+        <p style="margin-top: 20px; text-align: center;">
+            <a href="{{ path('app_order_index') }}">Назад к списку заказов</a>
+        </p>
+    </div>
+</body>
+</html>
