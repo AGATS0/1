@@ -39,7 +39,7 @@ class Post
     public function getApprovedComments(): Collection
     {
         return $this->comments->filter(function(Comment $comment){// фильтрациия коллекции по входящей функции
-            return $comment->isApproved() === true;
+            return $comment->isApproved();
         });   
     }
 
