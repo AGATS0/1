@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Doctrine\ORM\EntityManagerInterface;
 
+use function PHPUnit\Framework\isEmpty;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -37,32 +38,22 @@ class Post
 
     public function getApprovedComments(): Collection
     {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('c')
-            ->from(Comment::class, 'c')
-            ->where('c.post = :post')
-            ->andWhere('c.isApproved = 1')
-            ->setParameter('post', $this);
-            
-        $comments = $qb->getQuery()->getResult();
-
-        return new ArrayCollection($comments);
+        return $this->comments->filter(function(Comment $comment){// фильтрациия коллекции по входящей функции
+            return $comment->isApproved() === true;
+        });   
     }
 
 
-    public function getCommentWithMaxLikes(): Comment
+    public function getCommentWithMaxLikes(): ?Comment
     {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('c')
-            ->from(Comment::class, 'c')
-            ->where('c.post = :post')
-            ->setParameter('post', $this)
-            ->orderBy('c.likes', 'DESC')
-            ->setMaxResults(1);
+        if ($this->comments.isEmpty()) return null;
 
-        $comment = $qb->getQuery()->getOneOrNullResult();
+        $comments = $this->comments->toArray();
+        usort($comments,function (Comment $a, Comment $b) { //пользовательская сортировка, можно сортировать даже строки по алфавиту : usort($comments, fn($a, $b) => strcmp($a->getText(), $b->getText()));
+            return $b->getLikes() <=> $a->getLikes(); // b<=>a (от большего к меньшему), a<=>b (от меньшего к большему):  15 <=> 5 -> 1, 5 <=> 15 -> -1 , 5 <=> 5 -> 0
+        });
 
-        return $comment;
+        return $comments[0];
     }
 
     public function getId(): ?int
